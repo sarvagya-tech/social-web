@@ -4,3 +4,5 @@ const asynchandler = (asyncrequest)=>{
         promise.catch((err)=>next(err))
     }
 }
+
+export {asynchandler};
