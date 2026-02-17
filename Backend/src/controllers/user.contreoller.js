@@ -6,6 +6,33 @@ import {ApiResponse} from "../utils/apiResponse.js"
 
 
 
+const genrateAccesstkenAndRefreshtoken = (userId)=>{
+
+try {
+        // ❓ Ye function kya karta hai (1 line me)
+        // 👉 Given a userId, ye function:
+        // user ko DB se nikalta hai
+        // access token generate karta hai
+        // refresh token generate karta hai
+        // refresh token DB me save karta hai
+        // dono tokens return karta hai
+        
+                const user = User.findById(userId);
+        
+               const accessToken =  user.generateAccessToken();
+               const refreshToken =  user.generateRefreshToken();
+        
+                user.refreshToken = refreshToken;
+        
+                user.save({validateBeforeSave : false})
+        
+                return {accessToken,refreshToken}
+        }
+catch (error) {
+        throw new ApiError(500,"something went wrong while genrating access and refresh token")
+        
+}
+}
 
 const registerUser = asynchandler(async (req,res)=>{
     
@@ -80,11 +107,52 @@ const createdUser = User.findById(user._id).select(
     //access and referesh token
     //send cookie
 
-    const loginUser = (req,res)=>{
+    const loginUser = asynchandler(async(req,res)=>{
 
         const {email,username,password} = req.body;
+        
+        if(!username && !email){
+                throw new ApiError()
+        }
 
-    }
+        const user = await User.findOne({
+                $or : [{username},{email}]
+        })
+
+        if(!user){
+                throw new ApiError();
+        }
+
+        const ispasswordValid = await user.isPasswordCorrect(password);
+
+        if(!ispasswordValid){
+                throw new ApiError();
+        }
+
+        const {accessToken,refreshToken} = genrateAccesstkenAndRefreshtoken(user._id);
+
+        const options = {
+                httpOnly : true,
+                secure : true
+
+        }
+
+        return res
+        .status(200)
+        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,options)
+        .json(
+                new ApiResponse(
+                        200,
+                        {
+                         user : loginUser,accessToken,refreshToken
+                        },
+                        "user logged in "
+                )
+        )
+    })
 
 
-export {registerUser};
+export {registerUser,
+        loginUser
+};
