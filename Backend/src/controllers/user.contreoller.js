@@ -130,6 +130,7 @@ const createdUser = User.findById(user._id).select(
         }
 
         const {accessToken,refreshToken} = genrateAccesstkenAndRefreshtoken(user._id);
+        const loggedInuser = await User.findById(user._id).select("-password -refreshToken")
 
         const options = {
                 httpOnly : true,
@@ -145,14 +146,18 @@ const createdUser = User.findById(user._id).select(
                 new ApiResponse(
                         200,
                         {
-                         user : loginUser,accessToken,refreshToken
+                         user : loggedInuser,accessToken,refreshToken
                         },
                         "user logged in "
                 )
         )
     })
 
+     const logOutUser = asynchandler((req,res))=>{
 
+        
+
+     }
 export {registerUser,
         loginUser
 };
