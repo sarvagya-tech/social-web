@@ -70,14 +70,21 @@ const createdUser = User.findById(user._id).select(
 
     return res.status(201).json(
          new ApiResponse(200,createdUser,"register of user succesfull")
-    )
-
-
-
-
-
-    
+    )    
 })
+
+ // req body -> data
+    // username or email
+    //find the user
+    //password check
+    //access and referesh token
+    //send cookie
+
+    const loginUser = (req,res)=>{
+
+        const {email,username,password} = req.body;
+
+    }
 
 
 export {registerUser};
