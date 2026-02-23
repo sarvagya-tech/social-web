@@ -1,3 +1,4 @@
+import { User } from "../models/user.model";
 import { ApiError } from "../utils/apiError";
 import { asynchandler } from "../utils/asynchandler";
 import jwt from "jsonwebtoken"
@@ -10,8 +11,18 @@ const verifyJwt = asynchandler(async(req,res,next)=>{
     }
 
 const decodedToken = jwt.verify(token,
-    process.env.accessToken
+    process.env.ACCESS_TOKEN_SECRET
 )
+
+const user = User.findById(decodedToken?._id).select("-password -usernname");
+
+if(!user){
+    throw new ApiError()
+}
+
+req.user = user;
+next();
+
 
 
 })

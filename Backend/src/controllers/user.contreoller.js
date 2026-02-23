@@ -153,11 +153,28 @@ const createdUser = User.findById(user._id).select(
         )
     })
 
-     const logOutUser = asynchandler((req,res))=>{
+     const logOutUser = asynchandler(async (req,res) => {
+       await User.findByIdAndUpdate(req.user._id,
+        {
+                $unset :{
+                           refreshToken : 1
+                }
+        },{
+                new : true
+        }
+        );
 
-        
+        const options = {
+                httpOnly : true,
+                secure : true
+        }
 
-     }
+        return res
+        .status(200)
+        .clearcookie("accesToken",options)
+        .clearcookie("refeshToken",options)
+
+     });
 export {registerUser,
         loginUser
 };
