@@ -74,7 +74,7 @@ if(!avatarlocalPath){
 
 const avatar = await UploadOnCloudinary(avatarlocalPath);
 
-if(!avtar){
+if(!avatar){
         throw new ApiError(400,"avtar is required");
 }
 
@@ -173,6 +173,7 @@ const createdUser = User.findById(user._id).select(
         .status(200)
         .clearcookie("accesToken",options)
         .clearcookie("refeshToken",options)
+        .json(new ApiResponse(200,{},"user logged out"))
 
      });
 export {registerUser,
