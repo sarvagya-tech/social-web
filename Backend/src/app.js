@@ -19,6 +19,11 @@ import userRouter from "./routes/user.router.js"
 app.use("api/v2/users",userRouter)
 
 
+import { blogRouter } from "./routes/blog.router.js"
+
+app.use("api/v2/blog",blogRouter)
+
+
 
 
 

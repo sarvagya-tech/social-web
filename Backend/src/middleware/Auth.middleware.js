@@ -26,3 +26,4 @@ next();
 
 
 })
+export {verifyJwt};
