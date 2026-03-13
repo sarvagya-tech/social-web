@@ -1,4 +1,6 @@
 import express from "express"
+import cors from "cors"
+import cookieParser from "cookie-parser"
 
 
 const app = express()
@@ -16,12 +18,25 @@ app.use(cookieParser())
 
 import userRouter from "./routes/user.router.js"
 
-app.use("api/v2/users",userRouter)
+app.use("/api/v2/users",userRouter)
 
 
 import { blogRouter } from "./routes/blog.router.js"
 
-app.use("api/v2/blog",blogRouter)
+app.use("/api/v2/blog",blogRouter)
+
+app.get("/test",(req,res)=>{
+   res.send("API working")
+})
+
+
+app.use((req,res)=>{
+  res.status(404).json({
+    message:"Route not found"
+  })
+})
+
+
 
 
 

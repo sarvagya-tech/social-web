@@ -1,8 +1,8 @@
-import { ApiError } from "../utils/apiError";
-import { asynchandler } from "../utils/asynchandler";
-import { UploadOnCloudinary } from "../utils/cloudinary";
-import {Blog} from "../models/blog.modal"
-import { ApiResponse } from "../utils/apiResponse";
+import { ApiError } from "../utils/apiError.js";
+import { asynchandler } from "../utils/asynchandler.js";
+import { UploadOnCloudinary } from "../utils/cloudinary.js";
+import {Blog} from "../models/blog.modal.js"
+import { ApiResponse } from "../utils/apiResponse.js";
 
 
 
@@ -17,7 +17,7 @@ const createBlog = asynchandler(async(req,res)=>{
         throw new ApiError()
     }
 
-    const mediaLocalpath = req.files?.media[0].path;
+    const mediaLocalpath = req.files?.media?.[0]?.path;
 
     if(!mediaLocalpath){
         throw new ApiError()

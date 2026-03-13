@@ -66,10 +66,10 @@ if(existedUser){
         throw new ApiError(409,"user or email alredy existed");
 }
 
-const  avatarlocalPath = req.file?.avatar[0]?.Path;
+const  avatarlocalPath = req.files?.avatar?.[0]?.path;
 
 if(!avatarlocalPath){
-        throw new ApiError(400,"avtar file required");
+        throw new ApiError(400,"avatar file required");
 }
 
 const avatar = await UploadOnCloudinary(avatarlocalPath);
@@ -87,7 +87,7 @@ const user = await User.create({
         username : username.toLowerCase()
 })
 
-const createdUser = User.findById(user._id).select(
+const createdUser = await User.findById(user._id).select(
        " -password -refreshToken"
 )
 
