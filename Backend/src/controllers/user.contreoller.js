@@ -6,7 +6,7 @@ import {ApiResponse} from "../utils/apiResponse.js"
 
 
 
-const genrateAccesstkenAndRefreshtoken = (userId)=>{
+const genrateAccesstkenAndRefreshtoken = async(userId)=>{
 
 try {
         // ❓ Ye function kya karta hai (1 line me)
@@ -17,14 +17,14 @@ try {
         // refresh token DB me save karta hai
         // dono tokens return karta hai
         
-                const user = User.findById(userId);
+                const user = await User.findById(userId);
         
                const accessToken =  user.generateAccessToken();
                const refreshToken =  user.generateRefreshToken();
         
                 user.refreshToken = refreshToken;
         
-                user.save({validateBeforeSave : false})
+              await user.save({validateBeforeSave : false})
         
                 return {accessToken,refreshToken}
         }
@@ -129,7 +129,10 @@ const createdUser = await User.findById(user._id).select(
                 throw new ApiError();
         }
 
-        const {accessToken,refreshToken} = genrateAccesstkenAndRefreshtoken(user._id);
+        const {accessToken,refreshToken} =
+         await genrateAccesstkenAndRefreshtoken(user._id);
+
+        
         const loggedInuser = await User.findById(user._id).select("-password -refreshToken")
 
         const options = {

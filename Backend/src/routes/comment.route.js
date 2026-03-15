@@ -13,3 +13,5 @@ commentRouter
 
 commentRouter
 .route("/:commentId").patch(verifyJwt,updateComment)
+
+export {commentRouter}

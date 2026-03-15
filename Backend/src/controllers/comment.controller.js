@@ -63,7 +63,7 @@ const updateComment = asynchandler(async(req,res)=>{
    if(!content){
      throw new ApiError(404,"comment content is requird ")
    }
-       const comment = await Comment.findById(req.param.commentId);
+       const comment = await Comment.findById(req.params.commentId);
 
        if(!comment){
          throw new ApiError(404,"comment not found ")

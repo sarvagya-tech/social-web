@@ -21,21 +21,9 @@ const blogSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
+    }
 
-    likes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
+    
   },
   {
     timestamps: true,
