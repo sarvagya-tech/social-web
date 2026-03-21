@@ -8,6 +8,9 @@ const blogRouter = Router()
 blogRouter
 .route("/")
 .get(getallBlog)
+
+blogRouter
+.route("/create")
 .post(verifyJwt,
     upload.fields([{
         name : "media",
