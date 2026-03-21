@@ -1,7 +1,12 @@
 import BlogCard from "./BlogCard";
 import blogPosts from "../data/blogPosts";
+import { useEffect, useState } from "react";
+import { getAllBlogs } from "../service/axios";
 
 function BlogList() {
+  
+
+
   return (
     <section className="px-4 py-16 sm:px-8">
       <div className="mx-auto max-w-7xl">

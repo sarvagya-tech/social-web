@@ -1,13 +1,61 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import blogPosts from "../data/blogPosts";
+import { getBlogbyId } from "../service/axios";
 
 function BlogDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null)
 
-  const post = blogPosts.find((item) => String(item.id) === String(id));
+  useEffect(() => {
+    const fetchBlogdata = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const blog = await getBlogbyId(id);
+        setPost(blog);
+      } catch (error) {
+        setError("failed to fetch the blog");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchBlogdata();
+  }, [id]);
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white">
+        <NavBar />
+        <main className="mx-auto flex w-full max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-8">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+          <p className="mt-4 text-slate-300">Loading...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white">
+        <NavBar />
+        <main className="mx-auto flex w-full max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400">{error}</p>
+          <button onClick={() => navigate("/")} className="mt-8 rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-slate-950 transition hover:bg-amber-300">
+            Back To Home
+          </button>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -49,18 +97,18 @@ function BlogDetails() {
           </button>
 
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-amber-300">
-            {post.category}
+            {post.category || "Blog"}
           </p>
           <h1 className="max-w-4xl text-4xl font-black leading-tight [font-family:'Playfair_Display',serif] sm:text-5xl">
             {post.title}
           </h1>
           <p className="mt-5 text-sm uppercase tracking-[0.12em] text-slate-400">
-            {post.author} | {post.date} | {post.readTime}
+            {post.author?.username || post.author?.fullname || post.author || "Anonymous"} | {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : post.date} | {post.readTime || "5 min read"}
           </p>
 
           <div className="mt-8 overflow-hidden rounded-[1.8rem] border border-white/10">
             <img
-              src={post.image}
+              src={post.media || post.image}
               alt={post.title}
               className="h-[340px] w-full object-cover sm:h-[460px]"
             />
@@ -68,11 +116,16 @@ function BlogDetails() {
 
           <article className="mt-10 max-w-3xl text-base leading-8 text-slate-200">
             <p>{post.content}</p>
-            <p className="mt-6">
-              This page is currently using local static data so you can build
-              and test the flow quickly. Next step is replacing this with
-              backend data from your blog API endpoint.
-            </p>
+            {post.media && (
+              <p className="mt-6 text-sm text-amber-300">
+                ✅ This blog post is loaded from your backend API!
+              </p>
+            )}
+            {!post.media && (
+              <p className="mt-6 text-slate-400">
+                This page is currently using local static data. Connect to your backend to see real blog content.
+              </p>
+            )}
           </article>
 
           <section className="mt-14 border-t border-white/10 pt-10">
@@ -81,7 +134,7 @@ function BlogDetails() {
             </h2>
             <div className="mt-6 grid gap-6 md:grid-cols-2">
               {blogPosts
-                .filter((item) => item.id !== post.id)
+                .filter((item) => item.id !== post._id && item.id !== post.id)
                 .slice(0, 2)
                 .map((item) => (
                   <Link

@@ -41,6 +41,79 @@ const blogPosts = [
     image:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
   },
+  {
+    id: 4,
+    category: "entertainment",
+    title: "jai ho ram ji ki",
+    excerpt:
+      "hello kya naam hai tumhara manish kha le ja rhe hai ye udhar kha bhai .",
+    content:
+      "humko peeni hai humko peeni hai humko peeni hai.",
+    author: "manoj tiwari",
+    date: "March 15, 2026",
+    readTime: "4 min read",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+  },
+   {
+    id: 4,
+    category: "entertainment",
+    title: "jai ho ram ji ki",
+    excerpt:
+      "hello kya naam hai tumhara manish kha le ja rhe hai ye udhar kha bhai .",
+    content:
+      "humko peeni hai humko peeni hai humko peeni hai.",
+    author: "manoj tiwari",
+    date: "March 15, 2026",
+    readTime: "4 min read",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+  },
+   {
+    id: 4,
+    category: "entertainment",
+    title: "jai ho ram ji ki",
+    excerpt:
+      "hello kya naam hai tumhara manish kha le ja rhe hai ye udhar kha bhai .",
+    content:
+      "humko peeni hai humko peeni hai humko peeni hai.",
+    author: "manoj tiwari",
+    date: "March 15, 2026",
+    readTime: "4 min read",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+  },
+   {
+    id: 4,
+    category: "entertainment",
+    title: "jai ho ram ji ki",
+    excerpt:
+      "hello kya naam hai tumhara manish kha le ja rhe hai ye udhar kha bhai .",
+    content:
+      "humko peeni hai humko peeni hai humko peeni hai.",
+    author: "manoj tiwari",
+    date: "March 15, 2026",
+    readTime: "4 min read",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+  },
+   {
+    id: 4,
+    category: "entertainment",
+    title: "jai ho ram ji ki",
+    excerpt:
+      "hello kya naam hai tumhara manish kha le ja rhe hai ye udhar kha bhai .",
+    content:
+      "humko peeni hai humko peeni hai humko peeni hai.",
+    author: "manoj tiwari",
+    date: "March 15, 2026",
+    readTime: "4 min read",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+  },
+  
+  
+
 ];
 
 export default blogPosts;

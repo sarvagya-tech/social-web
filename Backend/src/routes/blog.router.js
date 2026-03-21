@@ -6,7 +6,7 @@ import { upload } from "../middleware/multer.middleware.js";
 const blogRouter = Router()
 
 blogRouter
-.route("/")
+.route("/blogs")
 .get(getallBlog)
 
 blogRouter

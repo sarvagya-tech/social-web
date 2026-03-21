@@ -45,35 +45,39 @@ const createBlog = asynchandler(async(req,res)=>{
     })
 
 
-    const getallBlog = asynchandler((req,res)=>{
+    const getallBlog = asynchandler(async (req,res)=>{
 
-        const blogs = Blog.find()
-        .populate(author,"username fullname")
+        const blogs = await Blog.find()
+        .populate("author","username fullname")
         .sort({createdAt : -1});
 
         if(!blogs){
-            throw new ApiError()
+            throw new ApiError(404, "No blogs found")
         }
 
         return res
-        .status()
-        .json(new ApiResponse(200,blogs,"all blogs "))
+        .status(200)
+        .json(new ApiResponse(200,blogs,"all blogs fetched successfully"))
 
     });
 
 
-    const getsingleBlog = asynchandler((req,res)=>
+    const getsingleBlog = asynchandler(async (req,res)=>
         {
-        const singleblog = Blog.findById(req.param._id)
-        .populate(author,"username fullname")
+        console.log("Requested blog ID:", req.params.id);
+
+        const singleblog = await Blog.findById(req.params.id)
+        .populate("author","username fullname")
+
+        console.log("Found blog:", singleblog);
 
         if(!singleblog){
-            throw new ApiError()
+            throw new ApiError(404, "Blog not found")
         }
 
         return res
     .status(200)
-    .json(new ApiResponse(200,singleblog,"this is the single blog "))
+    .json(new ApiResponse(200,singleblog,"blog fetched successfully"))
 
 
 

@@ -14,11 +14,10 @@ function App() {
     <div className="min-h-screen bg-slate-950 text-white">
 
       <Routes>
-        <Route path="/" element = {<Home/>}/>
-         <Route path="/blog" element={<BlogDetails />} />
-         <Route path="/blog/create" element = {<CreateBlog/>}/>
-        
-
+        <Route path="/" element={<Home />} />
+        <Route path="/blog/create" element={<CreateBlog />} />
+        <Route path="/blog/:id" element={<BlogDetails />} />
+        <Route path="/blog/" element = {<BlogList/>}/>
       </Routes>
 
 

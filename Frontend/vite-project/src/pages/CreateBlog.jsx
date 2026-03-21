@@ -1,36 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import NavBar from '../components/NavBar';
 
 const CreateBlog = () => {
-  const [formData, setFormData] = useState({
-    title: '',
-    category: '',
-    excerpt: '',
-    content: '',
-    image: null,
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleImageChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      image: e.target.files[0]
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Blog created:', formData);
-    // Add your submission logic here
-  };
-
   return (
     <>
       <NavBar />
@@ -54,7 +25,7 @@ const CreateBlog = () => {
           </div>
 
           {/* Form Container */}
-          <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm shadow-2xl sm:p-10">
+          <form className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm shadow-2xl sm:p-10">
             
             {/* Title Input */}
             <div>
@@ -65,9 +36,6 @@ const CreateBlog = () => {
                 id="title"
                 name="title"
                 type="text"
-                value={formData.title}
-                onChange={handleChange}
-                required
                 placeholder="Enter an engaging title for your blog..."
                 className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-slate-400 transition focus:border-amber-300/50 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
               />
@@ -82,8 +50,6 @@ const CreateBlog = () => {
                 id="category"
                 name="category"
                 type="text"
-                value={formData.category}
-                onChange={handleChange}
                 placeholder="e.g., Technology, Design, Productivity..."
                 className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-slate-400 transition focus:border-amber-300/50 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
               />
@@ -97,8 +63,6 @@ const CreateBlog = () => {
               <textarea
                 id="excerpt"
                 name="excerpt"
-                value={formData.excerpt}
-                onChange={handleChange}
                 rows="3"
                 placeholder="Write a brief summary of your blog post..."
                 className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-slate-400 resize-vertical transition focus:border-amber-300/50 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
@@ -113,10 +77,7 @@ const CreateBlog = () => {
               <textarea
                 id="content"
                 name="content"
-                value={formData.content}
-                onChange={handleChange}
                 rows="12"
-                required
                 placeholder="Write your full blog content here. Feel free to express your ideas..."
                 className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-slate-400 resize-vertical transition focus:border-amber-300/50 focus:outline-none focus:ring-2 focus:ring-amber-400/20"
               />
@@ -133,14 +94,13 @@ const CreateBlog = () => {
                   name="image"
                   type="file"
                   accept="image/*"
-                  onChange={handleImageChange}
                   className="hidden"
                 />
                 <label htmlFor="image" className="cursor-pointer">
                   <div className="space-y-2">
                     <div className="text-2xl">📸</div>
                     <p className="text-sm font-medium text-slate-300">
-                      {formData.image ? formData.image.name : 'Click to upload or drag and drop'}
+                      Click to upload or drag and drop
                     </p>
                     <p className="text-xs text-slate-400">PNG, JPG, GIF up to 5MB</p>
                   </div>
