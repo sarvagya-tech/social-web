@@ -12,3 +12,18 @@ export const getBlogbyId = async (id) => {
   const response = await axios.get(`${API}/blog/${id}`);
   return response.data?.message ?? null;
 };
+
+export const getBlogbyId = async (id) => {
+  const response = await axios.get(`${API}/blog/${id}`);
+  return response.data?.message ?? null;
+};
+
+export const getBlogbyId = async (id) => {
+  const response = await axios.get(`${API}/blog/${id}`);
+  return response.data?.message ?? null;
+};
+
+export const getBlogbyId = async (id) => {
+  const response = await axios.get(`${API}/blog/${id}`);
+  return response.data?.message ?? null;
+};
