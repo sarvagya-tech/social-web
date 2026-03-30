@@ -1,34 +1,43 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import blogPosts from "../data/blogPosts";
-import { getBlogbyId } from "../service/axios";
+import { getBlogById } from "../service/axios";
+
+const getEstimatedReadTime = (content = "") => {
+  const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
+  const minutes = Math.max(1, Math.ceil(wordCount / 200));
+  return `${minutes} min read`;
+};
 
 function BlogDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchBlogdata = async () => {
+    const fetchBlogData = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        const blog = await getBlogbyId(id);
+        const blog = await getBlogById(id);
         setPost(blog);
-      } catch (error) {
-        setError("failed to fetch the blog");
+      } catch {
+        setError("Failed to fetch the blog.");
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) fetchBlogdata();
+    if (id) {
+      fetchBlogData();
+    }
   }, [id]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-950 text-white">
@@ -47,8 +56,13 @@ function BlogDetails() {
       <div className="min-h-screen bg-slate-950 text-white">
         <NavBar />
         <main className="mx-auto flex w-full max-w-4xl flex-col items-center px-4 py-24 text-center sm:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400">{error}</p>
-          <button onClick={() => navigate("/")} className="mt-8 rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-slate-950 transition hover:bg-amber-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400">
+            {error}
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-8 rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-slate-950 transition hover:bg-amber-300"
+          >
             Back To Home
           </button>
         </main>
@@ -103,7 +117,11 @@ function BlogDetails() {
             {post.title}
           </h1>
           <p className="mt-5 text-sm uppercase tracking-[0.12em] text-slate-400">
-            {post.author?.username || post.author?.fullname || post.author || "Anonymous"} | {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : post.date} | {post.readTime || "5 min read"}
+            {post.author?.username || post.author?.fullname || post.author || "Anonymous"} |{" "}
+            {post.createdAt
+              ? new Date(post.createdAt).toLocaleDateString()
+              : post.date}{" "}
+            | {post.readTime || getEstimatedReadTime(post.content)}
           </p>
 
           <div className="mt-8 overflow-hidden rounded-[1.8rem] border border-white/10">
@@ -114,16 +132,16 @@ function BlogDetails() {
             />
           </div>
 
-          <article className="mt-10 max-w-3xl text-base leading-8 text-slate-200">
+          <article className="mt-10 max-w-3xl whitespace-pre-line text-base leading-8 text-slate-200">
             <p>{post.content}</p>
-            {post.media && (
+            {post.media ? (
               <p className="mt-6 text-sm text-amber-300">
-                ✅ This blog post is loaded from your backend API!
+                This blog post is loaded from your backend API.
               </p>
-            )}
-            {!post.media && (
+            ) : (
               <p className="mt-6 text-slate-400">
-                This page is currently using local static data. Connect to your backend to see real blog content.
+                This page is currently using local static data. Connect to your
+                backend to see real blog content.
               </p>
             )}
           </article>
