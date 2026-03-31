@@ -23,3 +23,8 @@ export const createBlogPost = async (payload, token) => {
   const response = await apiClient.post('/blog/create', payload, { headers });
   return response.data?.message ?? null;
 };
+
+export const loginUser = async ({ email, password }) => {
+  const response = await apiClient.post('/users/login', { email, password });
+  return response.data;
+};

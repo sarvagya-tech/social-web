@@ -7,6 +7,7 @@ import{Route,Routes} from "react-router-dom"
 import Home from "./pages/Home";
 import BlogDetails from "./pages/BlogDetails";
 import CreateBlog from "./pages/CreateBlog";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/blog/create" element={<CreateBlog />} />
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/blog/" element = {<BlogList/>}/>
+        <Route path="/login" element = {<Login/>}/>
       </Routes>
 
 

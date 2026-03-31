@@ -1,6 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { loginUser } from '../service/axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const[email,setEmail] = useState('');
+  const[password,setPassword] = useState('');
+  const navigate = useNavigate();
+  const[error,setError] = useState('');
+  const[success,setSuccess] = useState('');
+  const[loading,setLoading] = useState(false);
+
+
+  const handleSubmit = async(e)=>{
+     
+    e.preventDefault();
+    setError('');
+    setSuccess('')
+
+    if(!email || !password){
+      setError("email and password are required");
+      return;
+    }
+
+    setLoading(true)
+
+    try {
+      const response = await loginUser({email,password});
+
+
+      setSuccess("successfully loged in ")
+      navigate('/');
+      
+
+      
+    } catch (error) {
+
+      setError(error.message|| "Something went wrong.");
+      
+    }
+    finally{
+      setLoading(false)
+    }
+
+    
+
+
+  }
   return (
     <div className="h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 overflow-hidden px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-md w-full space-y-6 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-xl dark:shadow-gray-900/50">
@@ -19,7 +64,7 @@ const Login = () => {
         </div>
 
         {/* Form Structure */}
-        <form className="mt-8 space-y-5">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div className="space-y-4">
             
             {/* Email Address */}
@@ -31,6 +76,8 @@ const Login = () => {
                 id="email"
                 name="email"
                 type="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all sm:text-sm"
                 placeholder="you@example.com"
               />
@@ -50,19 +97,25 @@ const Login = () => {
                 id="password"
                 name="password"
                 type="password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all sm:text-sm"
                 placeholder="••••••••"
               />
             </div>
           </div>
 
+
           {/* Submit Button */}
           <div className="pt-2">
+            {error && <p className="text-red-400 text-sm">{error}</p>}
+            {success && <p className="text-green-400 text-sm">{success}</p>}
             <button
               type="submit"
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition-all active:scale-[0.98]"
+              disabled={loading}
+              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Sign in
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
           
