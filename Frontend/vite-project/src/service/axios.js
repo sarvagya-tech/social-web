@@ -28,3 +28,8 @@ export const loginUser = async ({ email, password }) => {
   const response = await apiClient.post('/users/login', { email, password });
   return response.data;
 };
+
+export const registerUser = async (formData) => {
+  const response = await apiClient.post('/users/register', formData);
+  return response.data;
+};

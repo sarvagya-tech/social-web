@@ -25,9 +25,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await loginUser({email,password});
-
-
+      await loginUser({email,password});
       setSuccess("successfully loged in ")
       navigate('/');
       
