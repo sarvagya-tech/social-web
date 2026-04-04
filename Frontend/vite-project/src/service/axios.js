@@ -10,18 +10,18 @@ const apiClient = axios.create({
 
 export const getAllBlogs = async () => {
   const response = await apiClient.get('/blog/blogs');
-  return response.data?.message ?? [];
+  return response.data?.data ?? [];
 };
 
 export const getBlogById = async (id) => {
   const response = await apiClient.get(`/blog/${id}`);
-  return response.data?.message ?? null;
+  return response.data?.data ?? null;
 };
 
 export const createBlogPost = async (payload, token) => {
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
   const response = await apiClient.post('/blog/create', payload, { headers });
-  return response.data?.message ?? null;
+  return response.data?.data ?? null;
 };
 
 export const loginUser = async ({ email, password }) => {

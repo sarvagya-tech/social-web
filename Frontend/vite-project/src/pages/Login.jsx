@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { loginUser } from '../service/axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../service/Authcontext';
 
 const Login = () => {
   const[email,setEmail] = useState('');
@@ -9,6 +10,7 @@ const Login = () => {
   const[error,setError] = useState('');
   const[success,setSuccess] = useState('');
   const[loading,setLoading] = useState(false);
+  const { login } = useAuth();
 
 
   const handleSubmit = async(e)=>{
@@ -25,7 +27,8 @@ const Login = () => {
     setLoading(true)
 
     try {
-      await loginUser({email,password});
+      const response = await loginUser({email,password});
+      login(response);
       setSuccess("successfully loged in ")
       navigate('/');
       
@@ -55,9 +58,9 @@ const Login = () => {
           </h2>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             Don't have an account?{' '}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
               Sign up here
-            </a>
+            </Link>
           </p>
         </div>
 
