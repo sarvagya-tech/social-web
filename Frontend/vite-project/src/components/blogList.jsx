@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import blogPosts from "../data/blogPosts";
 import { getAllBlogs } from "../service/axios";
@@ -7,6 +8,7 @@ function BlogList() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -26,6 +28,12 @@ function BlogList() {
   }, []);
 
   const postsToRender = loadError ? blogPosts : posts;
+  const displayedPosts = postsToRender.slice(0, 8);
+  const hasMorePosts = postsToRender.length > 8;
+
+  const handleViewMore = () => {
+    navigate('/blog');
+  };
 
   return (
     <section className="px-4 py-16 sm:px-8">
@@ -65,13 +73,26 @@ function BlogList() {
         ) : null}
 
         {!isLoading && postsToRender.length ? (
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-            {postsToRender.map((post) => (
-              <BlogCard key={post._id || post.id} post={post} />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {displayedPosts.map((post) => (
+                <BlogCard key={post._id || post.id} post={post} />
+              ))}
+            </div>
+            {hasMorePosts && (
+              <div className="mt-12 text-center">
+                <button
+                  onClick={handleViewMore}
+                  className="rounded-full bg-amber-400 px-8 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-950 transition hover:bg-amber-300"
+                >
+                  View More Articles
+                </button>
+              </div>
+            )}
+          </>
         ) : null}
       </div>
+      
     </section>
   );
 }
