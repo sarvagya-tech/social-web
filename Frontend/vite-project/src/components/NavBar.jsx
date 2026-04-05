@@ -21,9 +21,9 @@ function NavBar() {
             </Link>
           </li>
           <li>
-            <a className="transition hover:text-amber-300" href="#">
+            <Link className="transition hover:text-amber-300" to="/blog">
               Articles
-            </a>
+            </Link>
           </li>
           <li>
             <a className="transition hover:text-amber-300" href="#">
@@ -31,9 +31,11 @@ function NavBar() {
             </a>
           </li>
           <li>
-            <a className="transition hover:text-amber-300" href="#">
+            <Link
+            to={'/about'}
+             className="transition hover:text-amber-300" href="#">
               About
-            </a>
+            </Link>
           </li>
         </ul>
 

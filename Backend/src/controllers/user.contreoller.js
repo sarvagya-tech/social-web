@@ -136,24 +136,24 @@ const createdUser = await User.findById(user._id).select(
         const loggedInuser = await User.findById(user._id).select("-password -refreshToken")
 
         const options = {
-                httpOnly : true,
-                secure : true
-
-        }
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+        };
 
         return res
         .status(200)
-        .cookie("accessToken",accessToken,options)
-        .cookie("refreshToken",refreshToken,options)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
         .json(
                 new ApiResponse(
                         200,
                         {
-                         user : loggedInuser,accessToken,refreshToken
+                         user : loggedInuser, accessToken, refreshToken
                         },
                         "user logged in "
                 )
-        )
+        );
     })
 
      const logOutUser = asynchandler(async (req,res) => {

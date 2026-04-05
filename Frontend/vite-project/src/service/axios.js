@@ -18,11 +18,16 @@ export const getBlogById = async (id) => {
   return response.data?.data ?? null;
 };
 
-export const createBlogPost = async (payload, token) => {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {};
-  const response = await apiClient.post('/blog/create', payload, { headers });
-  return response.data?.data ?? null;
-};
+// export const createBlogPost = async (payload, token) => {
+//   const headers = token ? { Authorization: `Bearer ${token}` } : {};
+//   const response = await apiClient.post('/blog/create', payload, { headers });
+//   return response.data?.message ?? null;
+// };
+
+export const createBlogPost = async (formData)=>{
+  const response = await apiClient.post('/blog/create',formData);
+  return response.data;
+}
 
 export const loginUser = async ({ email, password }) => {
   const response = await apiClient.post('/users/login', { email, password });
@@ -31,5 +36,10 @@ export const loginUser = async ({ email, password }) => {
 
 export const registerUser = async (formData) => {
   const response = await apiClient.post('/users/register', formData);
+  return response.data;
+};
+
+export const currentUser = async () => {
+  const response = await apiClient.get('/users/me');
   return response.data;
 };

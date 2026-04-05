@@ -1,4 +1,22 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../service/Authcontext";
 function Header() {
+  const navigate = useNavigate();
+  const {user} = useAuth();
+  
+
+  const handleExplore = () => {
+    navigate('/blog');
+  }
+  const handleStart = ()=>{
+    if(!user){
+      navigate('/register');
+    }
+    else{
+        navigate('/blog/create');
+    }
+    
+  }
   return (
     <header className="relative overflow-hidden px-4 pb-12 pt-16 sm:px-8 sm:pt-20">
       <div className="pointer-events-none absolute -left-20 top-0 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl" />
@@ -18,11 +36,16 @@ function Header() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-4">
-            <button className="rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-950 transition hover:bg-amber-300">
-              Explore Articles
+            <button 
+            onClick={handleStart}
+            
+            className="rounded-full bg-amber-400 px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-950 transition hover:bg-amber-300">
+              Get started
             </button>
-            <button className="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300/40 hover:text-amber-100">
-              View Categories
+            <button 
+            onClick={handleExplore}
+            className="rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300/40 hover:text-amber-100">
+              Explore Articles
             </button>
           </div>
         </div>

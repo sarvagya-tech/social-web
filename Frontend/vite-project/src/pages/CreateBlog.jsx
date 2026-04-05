@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar';
+import { createBlogPost } from '../service/axios';
 
 const CreateBlog = () => {
 
@@ -30,18 +31,20 @@ const CreateBlog = () => {
       formData.append("category",category);
       formData.append("content",content);
       formData.append("excerpt",excerpt);
-      if(image)formData.append("image",image);
+      if (image) formData.append("media", image);
 
       // this down written code is for sending the content to the server//
            
-      const response = await fetch("http://localhost:7000/api/v2/blog",{
-        method : "POST",
-        body : formData,
-      });
+      // const response = await fetch("http://localhost:7000/api/v2/blog",{
+      //   method : "POST",
+      //   body : formData,
+      // });
 
-      const data = await response.json();
-      if(!response.ok) throw new Error(data.message || "Create failed")
-      
+      const data = await createBlogPost(formData);
+      // if(!response.ok) throw new Error(data.message || "Create failed")
+      if(!data){
+        setError("something went wrong");
+      }
         setSuccess("Blog published successfully!");
         setTitle('');
         setCategory('');
@@ -191,8 +194,9 @@ const CreateBlog = () => {
                 type="submit"
                 disabled={loading}
                 className="rounded-full bg-gradient-to-r from-amber-400 to-amber-300 px-8 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-950 transition hover:shadow-lg hover:shadow-amber-400/30"
-              />
+              >
                 {loading ? "Publishing..." : "Publish Blog"}
+              </button>
             </div>
 
           </form>
