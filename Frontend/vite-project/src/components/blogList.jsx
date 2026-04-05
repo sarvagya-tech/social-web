@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import blogPosts from "../data/blogPosts";
 import { getAllBlogs } from "../service/axios";
@@ -8,7 +7,7 @@ function BlogList() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  const navigate = useNavigate();
+  const [displayCount, setDisplayCount] = useState(6);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -28,11 +27,11 @@ function BlogList() {
   }, []);
 
   const postsToRender = loadError ? blogPosts : posts;
-  const displayedPosts = postsToRender.slice(0, 8);
-  const hasMorePosts = postsToRender.length > 8;
+  const displayedPosts = postsToRender.slice(0, displayCount);
+  const hasMorePosts = postsToRender.length > displayCount;
 
   const handleViewMore = () => {
-    navigate('/blog');
+    setDisplayCount((prev) => prev + 8);
   };
 
   return (
