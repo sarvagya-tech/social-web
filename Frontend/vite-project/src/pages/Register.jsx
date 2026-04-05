@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../service/axios';
+import { useAuth } from '../service/Authcontext';
 
 const Register = () => {
   const [fullname, setfullname] = useState('');
@@ -11,16 +12,29 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setloading] = useState(false);
   const [success, setsuccess] = useState('');
+  const navigate = useNavigate();
+  const {login} = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setsuccess('');
 
+
+    const isValidFormat = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if(!isValidFormat(email)){
+      setError('wrong email entered');
+    }
+
+
+
     if (!avatar) {
       setError('Avatar is required');
       return;
     }
+
+    
 
     setloading(true);
 
@@ -33,6 +47,9 @@ const Register = () => {
       formData.append('avatar', avatar);
 
       const response = await registerUser(formData);
+      
+      login(response);
+
 
       setsuccess(response?.message || 'User registered successfully');
       setfullname('');
@@ -40,6 +57,8 @@ const Register = () => {
       setemail('');
       setpassword('');
       setavatar(null);
+      navigate('/');
+      
     } catch (error) {
       setError(error.response?.data?.message || error.message || 'something went wrong');
     } finally {

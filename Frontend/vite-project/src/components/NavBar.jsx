@@ -40,7 +40,7 @@ function NavBar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          {isAuthenticated ? (
+          {isAuthenticated  ? (
             <>
               <Link
                 to="/blog/create"
