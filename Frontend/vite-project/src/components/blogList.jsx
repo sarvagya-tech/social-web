@@ -9,6 +9,8 @@ function BlogList() {
   const [loadError, setLoadError] = useState("");
   const [displayCount, setDisplayCount] = useState(6);
 
+  // today i am on the break today i am going to learn new things Bye!!//
+
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
