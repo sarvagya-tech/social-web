@@ -54,5 +54,5 @@ function Footer() {
     </footer>
   );
 }
-
+// aa rha hu jald hi may be kal pakka i will complete it 
 export default Footer;
