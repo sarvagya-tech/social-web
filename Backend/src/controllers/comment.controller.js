@@ -1,8 +1,8 @@
 import { asynchandler } from "../utils/asynchandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import { Comment } from "../models/comment.modal.js";
-import { Blog } from "../models/blog.modal.js";
+import { Comment } from "../models/comment.model.js";
+import { Blog } from "../models/blog.model.js";
 
 const createComment = asynchandler(async(req,res)=>{
          const {content} = req.body;

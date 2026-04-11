@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/apiError.js";
 import { asynchandler } from "../utils/asynchandler.js";
 import { UploadOnCloudinary } from "../utils/cloudinary.js";
-import {Blog} from "../models/blog.modal.js"
+import {Blog} from "../models/blog.model.js"
 import { ApiResponse } from "../utils/apiResponse.js";
 
 

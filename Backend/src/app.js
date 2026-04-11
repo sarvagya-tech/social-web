@@ -29,7 +29,7 @@ import { blogRouter } from "./routes/blog.router.js"
 app.use("/api/v2/blog",blogRouter)
 
 
-import { commentRouter } from "./routes/comment.route.js"
+import { commentRouter } from "./routes/comment.router.js"
 app.use("/api/v2/comment",commentRouter)
 
 app.get("/test",(req,res)=>{

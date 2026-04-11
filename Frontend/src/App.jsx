@@ -4,7 +4,7 @@ import BlogDetails from "./pages/BlogDetails";
 import CreateBlog from "./pages/CreateBlog";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import BlogList from "./components/blogList";
+import BlogList from "./components/BlogList";
 import About from "./components/About";
 
 
