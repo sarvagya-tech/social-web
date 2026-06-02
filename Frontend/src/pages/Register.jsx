@@ -25,6 +25,7 @@ const Register = () => {
 
     if(!isValidFormat(email)){
       setError('wrong email entered');
+      return;
     }
 
 

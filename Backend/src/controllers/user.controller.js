@@ -34,71 +34,79 @@ catch (error) {
 }
 }
 
-const registerUser = asynchandler(async (req,res)=>{
-    
-        // res.status(200).json({message : hello});
+const registerUser = async (req, res) => {
+        try {
+                const { username, password, email, fullname } = req.body;
 
-        const{username,password,email,fullname} = req.body
+                if ([username, fullname, password, email].some((field) => typeof field !== "string" || !field.trim())) {
+                        return res.status(400).json({
+                                success: false,
+                                message: "All fields are required",
+                                data: null,
+                        });
+                }
 
-        if(username.trim()==""){
-                throw new ApiError(400,"required")
-                
+                const existedUser = await User.findOne({
+                        $or: [{ username }, { email }],
+                });
+
+                if (existedUser) {
+                        return res.status(409).json({
+                                success: false,
+                                message: "user or email already existed",
+                                data: null,
+                        });
+                }
+
+                const avatarlocalPath = req.files?.avatar?.[0]?.path;
+
+                if (!avatarlocalPath) {
+                        return res.status(400).json({
+                                success: false,
+                                message: "avatar file required",
+                                data: null,
+                        });
+                }
+
+                const avatar = await UploadOnCloudinary(avatarlocalPath);
+
+                if (!avatar) {
+                        return res.status(400).json({
+                                success: false,
+                                message: "avatar upload failed",
+                                data: null,
+                        });
+                }
+
+                const user = await User.create({
+                        fullname,
+                        avatar: avatar.url,
+                        email,
+                        password,
+                        username: username.toLowerCase(),
+                });
+
+                const createdUser = await User.findById(user._id).select("-password -refreshToken");
+
+                if (!createdUser) {
+                        return res.status(500).json({
+                                success: false,
+                                message: "Something went wrong while registering the user",
+                                data: null,
+                        });
+                }
+
+                return res.status(201).json(
+                        new ApiResponse(201, createdUser, "user registered successfully")
+                );
+        } catch (error) {
+                return res.status(500).json({
+                        success: false,
+                        message: error?.message || "Something went wrong while registering the user",
+                        data: null,
+                });
         }
-         if(fullname.trim()==""){
-                throw new ApiError(400,"required")
-                
-        }
-         if(password.trim()==""){
-                throw new ApiError(400,"required")
-                
-        }
-         if(email.trim()==""){
-                throw new ApiError(400,"required")
-                
-        }
-
-        const existedUser = await User.findOne({
-                $or : [{username},{email}]
-
-})
-
-if(existedUser){
-        throw new ApiError(409,"user or email alredy existed");
-}
-
-const  avatarlocalPath = req.files?.avatar?.[0]?.path;
-
-if(!avatarlocalPath){
-        throw new ApiError(400,"avatar file required");
-}
-
-const avatar = await UploadOnCloudinary(avatarlocalPath);
-
-if(!avatar){
-        throw new ApiError(400,"avtar is required");
-}
-
-
-const user = await User.create({
-        fullname,
-        avatar : avatar.url,
-        email,
-        password,
-        username : username.toLowerCase()
-})
-
-const createdUser = await User.findById(user._id).select(
-       " -password -refreshToken"
-)
-
-  if (!createdUser) {
-        throw new ApiError(500, "Something went wrong while registering the user")
-    }
-
-    return res.status(201).json(
-         new ApiResponse(200,createdUser,"register of user succesfull")
-    )    
-})
+};
 
  // req body -> data
     // username or email

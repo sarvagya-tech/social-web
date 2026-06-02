@@ -18,8 +18,7 @@ function Footer() {
           <ul className="space-y-2 text-sm">
             <li>Articles</li>
             <li>Categories</li>
-            <li>Writers</li>
-            <li>Newsletter</li>
+            
           </ul>
         </div>
 
@@ -30,8 +29,8 @@ function Footer() {
           <ul className="space-y-2 text-sm">
             <li>About</li>
             <li>Contact</li>
-            <li>Careers</li>
-            <li>Support</li>
+            
+            
           </ul>
         </div>
 
@@ -41,9 +40,8 @@ function Footer() {
           </h5>
           <ul className="space-y-2 text-sm">
             <li>Instagram</li>
-            <li>LinkedIn</li>
             <li>Twitter</li>
-            <li>YouTube</li>
+           
           </ul>
         </div>
       </div>

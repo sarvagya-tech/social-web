@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
-import blogPosts from "../data/blogPosts";
 import { getAllBlogs } from "../service/axios";
 
 function BlogList() {
@@ -28,7 +27,7 @@ function BlogList() {
     fetchBlogs();
   }, []);
 
-  const postsToRender = loadError ? blogPosts : posts;
+  const postsToRender = posts;
   const displayedPosts = postsToRender.slice(0, displayCount);
   const hasMorePosts = postsToRender.length > displayCount;
 
@@ -50,8 +49,8 @@ function BlogList() {
           </div>
           <p className="max-w-md text-sm leading-7 text-slate-300">
             {loadError
-              ? "Showing local sample posts because the live blog API could not be reached."
-              : "This section now pulls published blogs from your backend API."}
+              ? "Unable to load blogs from the backend right now."
+              : "This section pulls published blogs directly from your backend API."}
           </p>
         </div>
 
@@ -61,7 +60,15 @@ function BlogList() {
           </div>
         ) : null}
 
-        {!isLoading && !postsToRender.length ? (
+        {!isLoading && loadError ? (
+          <div className="rounded-3xl border border-red-400/20 bg-red-500/10 px-6 py-12 text-center">
+            <p className="text-lg font-semibold text-white">
+              {loadError}
+            </p>
+          </div>
+        ) : null}
+
+        {!isLoading && !loadError && !postsToRender.length ? (
           <div className="rounded-3xl border border-dashed border-white/15 bg-white/5 px-6 py-12 text-center">
             <p className="text-lg font-semibold text-white">
               No blogs published yet.

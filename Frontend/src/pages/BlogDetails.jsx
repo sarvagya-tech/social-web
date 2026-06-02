@@ -2,8 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import blogPosts from "../data/blogPosts";
-import { getBlogById } from "../service/axios";
+import { getAllBlogs, getBlogById } from "../service/axios";
 
 const getEstimatedReadTime = (content = "") => {
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
@@ -15,6 +14,7 @@ function BlogDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -24,8 +24,13 @@ function BlogDetails() {
         setLoading(true);
         setError(null);
 
-        const blog = await getBlogById(id);
+        const [blog, blogs] = await Promise.all([getBlogById(id), getAllBlogs()]);
         setPost(blog);
+        setRelatedPosts(
+          (Array.isArray(blogs) ? blogs : []).filter(
+            (item) => item?._id !== blog?._id
+          )
+        );
       } catch {
         setError("Failed to fetch the blog.");
       } finally {
@@ -134,16 +139,9 @@ function BlogDetails() {
 
           <article className="mt-10 max-w-3xl whitespace-pre-line text-base leading-8 text-slate-200">
             <p>{post.content}</p>
-            {post.media ? (
-              <p className="mt-6 text-sm text-amber-300">
-                This blog post is loaded from your backend API.
-              </p>
-            ) : (
-              <p className="mt-6 text-slate-400">
-                This page is currently using local static data. Connect to your
-                backend to see real blog content.
-              </p>
-            )}
+            <p className="mt-6 text-sm text-amber-300">
+              
+            </p>
           </article>
 
           <section className="mt-14 border-t border-white/10 pt-10">
@@ -151,17 +149,16 @@ function BlogDetails() {
               More stories
             </h2>
             <div className="mt-6 grid gap-6 md:grid-cols-2">
-              {blogPosts
-                .filter((item) => item.id !== post._id && item.id !== post.id)
+              {relatedPosts
                 .slice(0, 2)
                 .map((item) => (
                   <Link
-                    key={item.id}
-                    to={`/blog/${item.id}`}
+                    key={item._id}
+                    to={`/blog/${item._id}`}
                     className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition hover:border-amber-300/30"
                   >
                     <img
-                      src={item.image}
+                      src={item.media}
                       alt={item.title}
                       className="h-40 w-full object-cover"
                     />
